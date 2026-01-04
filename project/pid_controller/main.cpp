@@ -275,6 +275,7 @@ int main ()
           vector< vector<double> > spirals_y;
           vector< vector<double> > spirals_v;
           vector<int> best_spirals;
+          // goal.velocity.x = 8.0; // hack
 
           path_planner(x_points, y_points, v_points, yaw, velocity, goal, is_junction, tl_state, spirals_x, spirals_y, spirals_v, best_spirals);
 
@@ -310,6 +311,7 @@ int main ()
           // Compute control to apply
           pid_steer.UpdateError(error_steer);
           double steer_output = pid_steer.TotalError();
+          std::cout << "steer_output: " << steer_output << std::endl;
 
           // Save data
           file_steer.seekg(std::ios::beg);
@@ -356,7 +358,11 @@ int main ()
             throttle_output = 0;
             brake_output = -throttle;
           }
-
+          std::cout << "throttle: " << throttle << std::endl;
+          std::cout << "v_points 0 " << v_points[0] << std::endl;
+          std::cout << "v_points 1 " << v_points[1] << std::endl;
+          std::cout << "velocity " << velocity << std::endl;
+          
           // Save data
           file_throttle.seekg(std::ios::beg);
           for(int j=0; j < i - 1; ++j){
