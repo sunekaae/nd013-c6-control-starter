@@ -11,18 +11,6 @@
 
 using namespace std;
 
-  double _kpi;
-  double _kii;
-  double _kdi;
-  double _output_lim_maxi;
-  double _output_lim_mini;
-
-  double _new_delta_time;
-
-  double _p_error;
-  double _i_error;
-  double _d_error;
-
 PID::PID() {}
 
 PID::~PID() {}
@@ -51,7 +39,7 @@ void PID::UpdateError(double cte) {
 
 double PID::TotalError() {
    /**
-   * TODO: Calculate and return the total error
+   * DONE: TODO: Calculate and return the total error
     * The code should return a value in the interval [output_lim_mini, output_lim_maxi]
    */
     double control = (-_kpi * _p_error) - (_kii * _i_error) - (_kdi * _d_error);
@@ -66,9 +54,9 @@ double PID::TotalError() {
 
 double PID::UpdateDeltaTime(double new_delta_time) {
    /**
-   * TODO: Update the delta time with new value
+   * DONE: TODO: Update the delta time with new value
    */
   _new_delta_time = new_delta_time;
-  // FIXME: method should be returning a double. why?
-  return new_delta_time;
+  // NOTE: method should be returning a double. why? In main.cpp the return value is not used.
+  return 0;
 }

@@ -216,17 +216,19 @@ int main ()
 
   // initialize pid steer
   /**
-  * TODO (Step 1): create pid (pid_steer) for steer command and initialize values
+  * DONE: TODO (Step 1): create pid (pid_steer) for steer command and initialize values
   **/
 
 
   // initialize pid throttle
   /**
-  * TODO (Step 1): create pid (pid_throttle) for throttle command and initialize values
+  * DONE: TODO (Step 1): create pid (pid_throttle) for throttle command and initialize values
   **/
 
   PID pid_steer = PID();
+  pid_steer.Init(0.12, 0.02, 2.0, 1.0, -1.0);
   PID pid_throttle = PID();
+  pid_throttle.Init(0.4, 0.15, 0.0, 1.0, -1.0);
 
   h.onMessage([&pid_steer, &pid_throttle, &new_delta_time, &timer, &prev_timer, &i, &prev_timer](uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length, uWS::OpCode opCode)
   {
@@ -286,7 +288,7 @@ int main ()
           ////////////////////////////////////////
 
           /**
-          * TODO (step 3): uncomment these lines
+          * DONE: TODO (step 3): uncomment these lines
           **/
            // Update the delta time with the previous command
            pid_steer.UpdateDeltaTime(new_delta_time);
@@ -298,12 +300,12 @@ int main ()
    
 
           /**
-          * TODO (step 3): compute the steer error (error_steer) from the position and the desired trajectory
+          * DONE: TODO (step 3): compute the steer error (error_steer) from the position and the desired trajectory
           **/
           double error_steer = -sin(yaw) * dx + cos(yaw) * dy;
 
           /**
-          * TODO (step 3): uncomment these lines
+          * DONE: TODO (step 3): uncomment these lines
           **/
           // Compute control to apply
           pid_steer.UpdateError(error_steer);
@@ -323,7 +325,7 @@ int main ()
           ////////////////////////////////////////
 
           /**
-          * TODO (step 2): uncomment these lines
+          * DONE: TODO (step 2): uncomment these lines
           **/
            // Update the delta time with the previous command
            pid_throttle.UpdateDeltaTime(new_delta_time);
@@ -331,7 +333,7 @@ int main ()
           // Compute error of speed
           double error_throttle;
           /**
-          * TODO (step 2): compute the throttle error (error_throttle) from the position and the desired speed
+          * DONE: TODO (step 2): compute the throttle error (error_throttle) from the position and the desired speed
           **/
           // modify the following line for step 2
           error_throttle = v_points[0] - velocity;
@@ -340,7 +342,7 @@ int main ()
           double brake_output;
 
           /**
-          * TODO (step 2): uncomment these lines
+          * DONE: TODO (step 2): uncomment these lines
           **/
           // Compute control to apply
           pid_throttle.UpdateError(error_throttle);
