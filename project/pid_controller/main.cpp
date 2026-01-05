@@ -338,7 +338,7 @@ int main ()
           * DONE: TODO (step 2): compute the throttle error (error_throttle) from the position and the desired speed
           **/
           // modify the following line for step 2
-          error_throttle = v_points[0] - velocity;
+          error_throttle = velocity - v_points[0];
 
           double throttle_output;
           double brake_output;
