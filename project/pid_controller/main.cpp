@@ -278,6 +278,9 @@ int main ()
           // goal.velocity.x = 8.0; // hack
 
           path_planner(x_points, y_points, v_points, yaw, velocity, goal, is_junction, tl_state, spirals_x, spirals_y, spirals_v, best_spirals);
+          std::cout << "active_maneuver: " << behavior_planner.get_active_maneuver()
+                    << " is_junction: " << is_junction
+                    << " tl_state: " << tl_state << std::endl;
 
           // Save time and compute delta time
           time(&timer);
