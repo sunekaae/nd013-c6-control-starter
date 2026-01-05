@@ -226,9 +226,9 @@ int main ()
   **/
 
   PID pid_steer = PID();
-  pid_steer.Init(0.05, 0.0, 0.2, 0.3, -0.3);
+  pid_steer.Init(0.05, 0.0, 0.2, 0.0, 0.0);
   PID pid_throttle = PID();
-  pid_throttle.Init(0.4, 0.0, 0.0, 1.0, -1.0);
+  pid_throttle.Init(0.3, 0.05, 0.0, 10.0, -10.0);
 
   h.onMessage([&pid_steer, &pid_throttle, &new_delta_time, &timer, &prev_timer, &i, &prev_timer](uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length, uWS::OpCode opCode)
   {
@@ -278,7 +278,7 @@ int main ()
           // goal.velocity.x = 8.0; // hack
 
           path_planner(x_points, y_points, v_points, yaw, velocity, goal, is_junction, tl_state, spirals_x, spirals_y, spirals_v, best_spirals);
-          std::cout << "active_maneuver: " << behavior_planner.get_active_maneuver()
+          std::cout << std::fixed << std::setprecision(1) << "-------- active_maneuver: " << behavior_planner.get_active_maneuver()
                     << " is_junction: " << is_junction
                     << " tl_state: " << tl_state << std::endl;
 
@@ -298,14 +298,18 @@ int main ()
            pid_steer.UpdateDeltaTime(new_delta_time);
 
           // Compute steer error
-          size_t lookahead_idx = 5;
+          size_t lookahead_idx = 0;
           if (x_points.size() <= lookahead_idx) {
             lookahead_idx = x_points.size() - 1;
           }
           double dx = x_position - x_points[lookahead_idx];
           double dy = y_position - y_points[lookahead_idx];
           double lookahead_dist = std::sqrt(dx * dx + dy * dy);
+          std::cout << "x/y/v: " << x_position << "/" << y_position << "/" << velocity << "/" << std::endl;
           std::cout << "lookahead_dist: " << lookahead_dist << std::endl;
+          std::cout << "[lookahead +0]; " << "(" << x_points[lookahead_idx] << "/" << y_points[lookahead_idx] << "/" << v_points[lookahead_idx]  << ")" << std::endl;
+          std::cout << "[lookahead +1]; " << "(" << x_points[lookahead_idx+1] << "/" << y_points[lookahead_idx+1] << "/" << v_points[lookahead_idx+1]  << ")" << std::endl;
+          std::cout << "[lookahead +2]; " << "(" << x_points[lookahead_idx+2] << "/" << y_points[lookahead_idx+2] << "/" << v_points[lookahead_idx+2]  << ")" << std::endl;
           
    
 
@@ -320,8 +324,8 @@ int main ()
           // Compute control to apply
           pid_steer.UpdateError(error_steer);
           double steer_output = pid_steer.TotalError();
-          std::cout << "steer_output: " << steer_output << std::endl;
-          std::cout << "pid_steer Kp Ki Kd: " << pid_steer._kpi << " " << pid_steer._kii << " " << pid_steer._kdi << std::endl;
+          std::cout << "steer_output: " << steer_output << ". yaw: " << yaw << std::endl;
+          std::cout << "pid_steer p i d: " << pid_steer._p_error << " " << pid_steer._i_error << " " << pid_steer._d_error << std::endl;
 
           // Save data
           file_steer.seekg(std::ios::beg);
@@ -369,9 +373,9 @@ int main ()
             brake_output = -throttle;
           }
           std::cout << "throttle: " << throttle << std::endl;
-          std::cout << "v_points 0 " << v_points[0] << std::endl;
-          std::cout << "v_points 1 " << v_points[1] << std::endl;
-          std::cout << "velocity " << velocity << std::endl;
+         // std::cout << "v_points 0 " << v_points[0] << std::endl;
+          // std::cout << "v_points 1 " << v_points[1] << std::endl;
+          // std::cout << "velocity " << velocity << std::endl;
           
           // Save data
           file_throttle.seekg(std::ios::beg);
