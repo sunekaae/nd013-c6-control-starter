@@ -226,7 +226,7 @@ int main ()
   **/
 
   PID pid_steer = PID();
-  pid_steer.Init(0.1, 0.0, 0.00, 0.5, -0.5);
+  pid_steer.Init(0.05, 0.0, 0.05, 0.3, -0.3);
   PID pid_throttle = PID();
   pid_throttle.Init(0.3, 0.05, 0.0, 10.0, -10.0);
 
@@ -278,7 +278,7 @@ int main ()
           // goal.velocity.x = 8.0; // hack
 
           path_planner(x_points, y_points, v_points, yaw, velocity, goal, is_junction, tl_state, spirals_x, spirals_y, spirals_v, best_spirals);
-          std::cout << std::fixed << std::setprecision(1) << "-------- active_maneuver: " << behavior_planner.get_active_maneuver()
+          std::cout << std::fixed << std::setprecision(4) << "-------- active_maneuver: " << behavior_planner.get_active_maneuver()
                     << " is_junction: " << is_junction
                     << " tl_state: " << tl_state << std::endl;
 
