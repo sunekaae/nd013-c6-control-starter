@@ -37,8 +37,12 @@ void PID::UpdateError(double cte) {
    **/
    double previous_p_error = _p_error;
    _p_error = cte;
-   _d_error = cte - previous_p_error;
-   _i_error = _i_error + cte;
+   double dt = _new_delta_time;
+   if (dt <= 0.0) {
+     dt = 1.0;
+   }
+   _d_error = (cte - previous_p_error) / dt;
+   _i_error = _i_error + cte * dt;
 }
 
 double PID::TotalError() {
