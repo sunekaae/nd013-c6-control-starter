@@ -226,7 +226,7 @@ int main ()
   **/
 
   PID pid_steer = PID();
-  pid_steer.Init(0.05, 0.0, 0.4, 0.3, -0.3);
+  pid_steer.Init(0.03, 0.0, 0.0, 0.3, -0.3);
   PID pid_throttle = PID();
   pid_throttle.Init(0.4, 0.0, 0.0, 1.0, -1.0);
 
@@ -295,8 +295,14 @@ int main ()
            pid_steer.UpdateDeltaTime(new_delta_time);
 
           // Compute steer error
-          double dx = x_position - x_points[0];
-          double dy = y_position - y_points[0];
+          size_t lookahead_idx = 5;
+          if (x_points.size() <= lookahead_idx) {
+            lookahead_idx = x_points.size() - 1;
+          }
+          double dx = x_position - x_points[lookahead_idx];
+          double dy = y_position - y_points[lookahead_idx];
+          double lookahead_dist = std::sqrt(dx * dx + dy * dy);
+          std::cout << "lookahead_dist: " << lookahead_dist << std::endl;
           
    
 
