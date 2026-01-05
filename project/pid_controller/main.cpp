@@ -322,7 +322,11 @@ int main ()
           * DONE: TODO (step 3): uncomment these lines
           **/
           // Compute control to apply
-          pid_steer.UpdateError(error_steer);
+          if (velocity < 0.5) {
+            pid_steer.UpdateError(0.0);
+          } else {
+            pid_steer.UpdateError(error_steer);
+          }
           double steer_output = pid_steer.TotalError();
           std::cout << "steer_output: " << steer_output << ". error_steer: " << error_steer << ". yaw: " << yaw << std::endl;
           std::cout << "steer error terms. p/i/d: " << pid_steer._p_error << " / " << pid_steer._i_error << " / " << pid_steer._d_error << std::endl;
