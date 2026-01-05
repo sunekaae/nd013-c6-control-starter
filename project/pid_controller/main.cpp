@@ -302,8 +302,8 @@ int main ()
           if (x_points.size() <= lookahead_idx) {
             lookahead_idx = x_points.size() - 1;
           }
-          double dx = x_points[lookahead_idx] - x_position;
-          double dy = y_points[lookahead_idx] - y_position;
+          double dx = x_position - x_points[lookahead_idx];
+          double dy = y_position - y_points[lookahead_idx];
           double lookahead_dist = std::sqrt(dx * dx + dy * dy);
           std::cout << "x/y/v: " << x_position << "/" << y_position << "/" << velocity << "/" << std::endl;
           std::cout << "lookahead_dist: " << lookahead_dist << std::endl;
