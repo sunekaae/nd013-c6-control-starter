@@ -226,7 +226,7 @@ int main ()
   **/
 
   PID pid_steer = PID();
-  pid_steer.Init(0.05, 0.0, 0.2, 0.0, 0.0);
+  pid_steer.Init(0.1, 0.0, 0.00, 0.5, -0.5);
   PID pid_throttle = PID();
   pid_throttle.Init(0.3, 0.05, 0.0, 10.0, -10.0);
 
@@ -302,8 +302,8 @@ int main ()
           if (x_points.size() <= lookahead_idx) {
             lookahead_idx = x_points.size() - 1;
           }
-          double dx = x_position - x_points[lookahead_idx];
-          double dy = y_position - y_points[lookahead_idx];
+          double dx = x_points[lookahead_idx] - x_position;
+          double dy = y_points[lookahead_idx] - y_position;
           double lookahead_dist = std::sqrt(dx * dx + dy * dy);
           std::cout << "x/y/v: " << x_position << "/" << y_position << "/" << velocity << "/" << std::endl;
           std::cout << "lookahead_dist: " << lookahead_dist << std::endl;
@@ -324,8 +324,8 @@ int main ()
           // Compute control to apply
           pid_steer.UpdateError(error_steer);
           double steer_output = pid_steer.TotalError();
-          std::cout << "steer_output: " << steer_output << ". yaw: " << yaw << std::endl;
-          std::cout << "pid_steer p i d: " << pid_steer._p_error << " " << pid_steer._i_error << " " << pid_steer._d_error << std::endl;
+          std::cout << "steer_output: " << steer_output << ". error_steer: " << error_steer << ". yaw: " << yaw << std::endl;
+          std::cout << "steer error terms. p/i/d: " << pid_steer._p_error << " / " << pid_steer._i_error << " / " << pid_steer._d_error << std::endl;
 
           // Save data
           file_steer.seekg(std::ios::beg);
