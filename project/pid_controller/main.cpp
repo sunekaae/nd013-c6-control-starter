@@ -226,7 +226,7 @@ int main ()
   **/
 
   PID pid_steer = PID();
-  pid_steer.Init(0.03, 0.0, 0.0, 0.3, -0.3);
+  pid_steer.Init(0.05, 0.0, 0.2, 0.3, -0.3);
   PID pid_throttle = PID();
   pid_throttle.Init(0.4, 0.0, 0.0, 1.0, -1.0);
 
@@ -318,6 +318,7 @@ int main ()
           pid_steer.UpdateError(error_steer);
           double steer_output = pid_steer.TotalError();
           std::cout << "steer_output: " << steer_output << std::endl;
+          std::cout << "pid_steer Kp Ki Kd: " << pid_steer._kpi << " " << pid_steer._kii << " " << pid_steer._kdi << std::endl;
 
           // Save data
           file_steer.seekg(std::ios::beg);
