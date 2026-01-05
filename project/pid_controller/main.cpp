@@ -295,8 +295,8 @@ int main ()
            pid_steer.UpdateDeltaTime(new_delta_time);
 
           // Compute steer error
-          double dx = x_points[0] - x_position; 
-          double dy = y_points[0] - y_position; 
+          double dx = x_position - x_points[0];
+          double dy = y_position - y_points[0];
           
    
 
